@@ -31,7 +31,7 @@ function pm() {
     while [[ ! -f "$target_file" ]]; do
         cd ..
         if [[ $(pwd) == "/" ]]; then
-            echo "No '$target_file' file found in the current directory or its parents."
+            echo "No $target_file file found in the current directory or its parents."
             cd "$current_dir"
             return 1
         fi
