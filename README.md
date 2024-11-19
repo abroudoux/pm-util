@@ -25,18 +25,18 @@ Your previous working directory is saved, so you can use `pm -` to go back to it
 pm -
 ```
 
-Use the `--config` flag to configure your file reference.\
+Use the `--config` flag to configure your file reference.
 
 > By default, the value is `package.json`.
 
 ```bash
-# If you're working on a Cargo -based project
+# If you're working on a Cargo-based project
 pm --config cargo.lock
 ```
 
 ## 🧑‍🤝‍🧑 ・ Contributing
 
-To contribute, fork the repository and open a pull request with the details of your changes.\
+To contribute, fork the repository and open a pull request with the details of your changes.
 
 Create a branch with a [conventionnal name](https://tilburgsciencehub.com/building-blocks/collaborate-and-share-your-work/use-github/naming-git-branches/).
 

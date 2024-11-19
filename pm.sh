@@ -1,7 +1,6 @@
 function pm() {
     local temp_file="/tmp/pm_last_dir"
     local config_file="/tmp/pm_config_file"
-
     local target_file="package.json"
 
     if [[ -f "$config_file" ]]; then
