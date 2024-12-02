@@ -39,7 +39,12 @@ Use the `--file` / `-f` flag to configure your file reference.
 pm --file cargo.lock
 ```
 
-You can see your reference file by passing no argument to `pm -f`.
+You can see your reference file by using the flag `--show` / `-s`.
+
+```bash
+# Will output your reference file
+pm --show
+```
 
 ## 🧑‍🤝‍🧑 ・ Contributing
 
