@@ -7,6 +7,11 @@ function pm() {
         target_file=$(cat "$config_file")
     fi
 
+    if [[ "$1" == "--file"]]; then
+        echo "Current target file: $target_file"
+        return
+    fi
+
     if [[ "$1" == "--file" && -n "$2" ]] || [[ "$1" == "-f" && -n "$2" ]]; then
         target_file="$2"
         echo "$target_file" > "$config_file"

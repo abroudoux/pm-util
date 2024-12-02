@@ -1,6 +1,10 @@
 # pm
 
-Bash Utility to Manage Commands Inside Projects
+Bash Utility to Manage Commands Inside Projects.
+
+## 💽 ・ Installation
+
+Coming soon...
 
 ## 💻 ・ Usage
 
@@ -34,6 +38,8 @@ Use the `--file` / `-f` flag to configure your file reference.
 # If you're working on a Cargo-based project
 pm --file cargo.lock
 ```
+
+You can see your reference file by passing no argument to `pm -f`.
 
 ## 🧑‍🤝‍🧑 ・ Contributing
 
