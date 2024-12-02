@@ -7,7 +7,7 @@ function pm() {
         target_file=$(cat "$config_file")
     fi
 
-    if [[ "$1" == "--config" && -n "$2" ]]; then
+    if [[ "$1" == "--file" && -n "$2" ]] || [[ "$1" == "-f" && -n "$2" ]]; then
         target_file="$2"
         echo "$target_file" > "$config_file"
         echo "Configuration updated: target file is now '$target_file'"

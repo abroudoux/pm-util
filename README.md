@@ -7,7 +7,8 @@ Bash Utility to Manage Commands Inside Projects
 `pm` allows you to easily run and manage commands on your project, according to your <a>file reference</a>.
 
 ```bash
-# Will move you to the root of your project, then return you to your current working directory
+# Will move you to the root of your project (file reference)
+# then return you to your current working directory
 pm npm install express
 ```
 
@@ -25,13 +26,13 @@ Your previous working directory is saved, so you can use `pm -` to go back to it
 pm -
 ```
 
-Use the `--config` flag to configure your file reference.
+Use the `--file` / `-f` flag to configure your file reference.
 
 > By default, the value is `package.json`.
 
 ```bash
 # If you're working on a Cargo-based project
-pm --config cargo.lock
+pm --file cargo.lock
 ```
 
 ## 🧑‍🤝‍🧑 ・ Contributing
