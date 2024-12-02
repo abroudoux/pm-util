@@ -4,7 +4,17 @@ Bash Utility to Manage Commands Inside Projects.
 
 ## 💽 ・ Installation
 
-Coming soon...
+### Via Homebrew
+
+Wip 🚧
+
+### Manual
+
+You can create a separate bash file and copy `pm.sh` inside it. You'll need to load it at the beginning of your shell rc file (`.bashrc`, `.zshrc`).
+
+```bash
+source path/to/your/script.sh
+```
 
 ## 💻 ・ Usage
 

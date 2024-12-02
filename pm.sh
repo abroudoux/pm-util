@@ -52,6 +52,7 @@ function pm() {
     done
 
     local current_dir=$(pwd)
+
     while [[ ! -f "$target_file" ]]; do
         cd ..
         if [[ $(pwd) == "/" ]]; then
