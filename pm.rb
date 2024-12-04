@@ -9,10 +9,6 @@ class Pm < Formula
         bin.install "pm"
     end
 
-    def install
-        system "#{bin}/install.sh"
-    end
-
     test do
         system "pm --help"
     end
