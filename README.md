@@ -1,8 +1,8 @@
 # pm
 
-Bash Utility to Manage Commands Inside Projects.
+🗂️ Bash Utility to Manage Commands Inside Projects.
 
-## 💽 ・ Installation
+## 🚀 Installation
 
 ### Via Homebrew
 
@@ -10,15 +10,21 @@ Wip 🚧
 
 ### Manual
 
-You can create a separate bash file and copy `pm.sh` inside it. You'll need to load it at the beginning of your shell rc file (`.bashrc`, `.zshrc`).
+You can copy the function in your shell rc file. You can also create a separate bash file and copy `pm.sh` inside it. You'll need to load it at the beginning of your file, depending your shell (`.bashrc`, `.zshrc`, ...).
 
 ```bash
 source path/to/your/script.sh
 ```
 
-## 💻 ・ Usage
+Don't forget to resource your shell rc file
 
-`pm` allows you to easily run and manage commands on your project, according to your <a>file reference</a>.
+```bash
+source ~/.zshrc
+```
+
+## 💻 Usage
+
+`pm` allows you to easily run and manage commands on your project, according to your <a>file reference</a> which acts like the root of your project.
 
 ```bash
 # Will move you to the root of your project (file reference)
@@ -29,7 +35,7 @@ pm npm install express
 You can also return at the root of the project by simply use `pm`.
 
 ```bash
-# Will move you to the root of your project, at the same level as your reference file
+# Will move you to the root of your project
 pm
 ```
 
@@ -56,7 +62,7 @@ You can see your reference file by using the flag `--show` / `-s`.
 pm --show
 ```
 
-## 🧑‍🤝‍🧑 ・ Contributing
+## 🧑‍🤝‍🧑 Contributing
 
 To contribute, fork the repository and open a pull request with the details of your changes.
 
@@ -68,6 +74,12 @@ Create a branch with a [conventionnal name](https://tilburgsciencehub.com/buildi
 - hotfix `hotfix/oh-my-god-bro`
 - wip `wip/the-work-name-in-progress`
 
-## 📑 ・ License
+## 📌 Roadmap
+
+- [ ] Improve installation
+- [ ] Multiple packages managers options
+- [ ] Add options to navigate even faster in your project (wip...)
+
+## 📑 License
 
 This project is under MIT license. For more information, please see the file [LICENSE](./LICENSE).
