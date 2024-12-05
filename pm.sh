@@ -49,8 +49,10 @@ function pm() {
                 return
                 ;;
             --version|-v)
+                cat ./ascii.txt
+                echo ""
                 version=$(jq -r '.version' ./package-infos.json) 
-                echo "pm: $version"
+                echo "$version"
                 return
                 ;;
             --help|-h)
