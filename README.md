@@ -81,6 +81,7 @@ Create a branch with a [conventionnal name](https://tilburgsciencehub.com/buildi
 - [ ] Improve installation
 - [ ] Multiple packages managers options
 - [ ] Add options to navigate even faster in your project (wip...)
+- [ ] Upload ASCII art
 
 ## 📑 License
 
