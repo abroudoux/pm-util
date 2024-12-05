@@ -32,11 +32,11 @@ source ~/.zshrc
 pm npm install express
 ```
 
-You can also return at the root of the project by simply use `pm`.
+You can also return at the root of the project by simply use `pm` or the flag `--root` / `-r`.
 
 ```bash
 # Will move you to the root of your project
-pm
+pm --root
 ```
 
 Your previous working directory is saved, so you can use `pm -` to go back to it.
