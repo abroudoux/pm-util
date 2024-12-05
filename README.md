@@ -12,13 +12,13 @@ Wip 🚧
 
 ### Manual
 
-You can copy the function in your shell rc file. You can also create a separate bash file and copy `pm.sh` inside it. You'll need to load it at the beginning of your file, depending your shell (`.bashrc`, `.zshrc`, ...).
+You can copy the function in your shell's RC file. Alternatively, You can create a separate Bash script file and copy `pm.sh` into it. You'll need to load it at the beginning of your shell RC file (e.g., `.bashrc`, `.zshrc`, etc.).
 
 ```bash
 source path/to/your/script.sh
 ```
 
-Don't forget to resource your shell rc file
+Don't forget to resource your shell RC file:
 
 ```bash
 source ~/.zshrc

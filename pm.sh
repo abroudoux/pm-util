@@ -3,8 +3,6 @@ function pm() {
     local config_file="/tmp/pm_config_file"
     local target_file="package.json"
 
-    [[ -f "$config_file" ]] && target_file=$(cat "$config_file")
-
     if [[ $target_file == "" ]]; then
         echo "Error: target file is not set. Use --file to set it." >&2
         return 1
