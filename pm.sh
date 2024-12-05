@@ -12,6 +12,27 @@ function pm() {
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
+            --root|-r)
+                while [[ ! -f "$target_file" ]]; do
+                    cd ..
+                    if [[ $(pwd) == "/" ]]; then
+                        echo "No $target_file file found in the current directory or its parents."
+                        cd "$current_dir"
+                        return 1
+                    fi
+                done
+                return
+                ;;
+            -)
+                if [[ -f "$temp_file" ]]; then
+                    local last_dir=$(cat "$temp_file")
+                    cd "$last_dir" || return 1
+                    echo "Returned to last directory: $last_dir"
+                else
+                    echo "No previous directory saved."
+                fi
+                return
+                ;;
             --file|-f)
                 if [[ -n "$2" ]]; then
                     target_file="$2"
@@ -27,24 +48,15 @@ function pm() {
                 echo "Current target file: $target_file"
                 return
                 ;;
-            -)
-                if [[ -f "$temp_file" ]]; then
-                    local last_dir=$(cat "$temp_file")
-                    cd "$last_dir" || return 1
-                    echo "Returned to last directory: $last_dir"
-                else
-                    echo "No previous directory saved."
-                fi
-                return
-                ;;
             --help|-h)
                 echo "Usage: pm [options] [command]"
                 echo "Options:"
+                echo "  --root, -r            Change to the project's root directory"
+                echo "  <command>             Execute a command in the project's root directory then return to the current directory"
+                echo "  -                     Return to the last saved directory"
                 echo "  --file, -f <file>     Set or display the target file (default: package.json)"
                 echo "  --show, -s            Show the current target file"
-                echo "  -                     Return to the last saved directory"
                 echo "  --help, -h            Show this help message"
-                echo "  <command>             Execute a command in the project's root directory"
                 return
                 ;;
             *)
