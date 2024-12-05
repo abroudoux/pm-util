@@ -48,6 +48,11 @@ function pm() {
                 echo "Current target file: $target_file"
                 return
                 ;;
+            --version|-v)
+                version=$(jq -r '.version' ./package-infos.json) 
+                echo "pm: $version"
+                return
+                ;;
             --help|-h)
                 echo "Usage: pm [options] [command]"
                 echo "Options:"
