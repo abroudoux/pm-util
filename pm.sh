@@ -5,6 +5,11 @@ function pm() {
 
     [[ -f "$config_file" ]] && target_file=$(cat "$config_file")
 
+    if [[ $target_file == "" ]]; then
+        echo "Error: target file is not set. Use --file to set it." >&2
+        return 1
+    fi
+
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --file|-f)
