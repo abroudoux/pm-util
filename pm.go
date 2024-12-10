@@ -36,12 +36,6 @@ func checkIfReferenceFileExists() {
 }
 
 func setReFerenceFile() {
-	if len(os.Args) < 3 {
-		println("No file specified")
-		println("You should use 'pm --file [file]' to set the reference file")
-		os.Exit(1)
-	}
-
 	reference_file = os.Args[2]
 	cmd := exec.Command("echo", reference_file + " > " + reference_file_path)
 	err := cmd.Run()
@@ -52,6 +46,7 @@ func setReFerenceFile() {
 	}
 
 	println("Target file set to " + reference_file)
+	os.Exit(0)
 }
 
 func createReferenceFile() {
@@ -69,6 +64,7 @@ func createReferenceFile() {
 	}
 
 	println("Reference file created: " + reference_file)
+	os.Exit(0)
 }
 
 func printReferenceFile() {
@@ -80,6 +76,7 @@ func printReferenceFile() {
 	}
 
 	println("Current reference file: " + string(referenceFileContent))
+	os.Exit(0)
 }
 
 func flagMode() {
