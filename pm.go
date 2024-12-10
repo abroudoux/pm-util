@@ -6,7 +6,8 @@ import (
 	"os/exec"
 )
 
-var temp_file_path string = "/tmp/pm_last_dir"
+// var last_dir_path string = "/tmp/pm_last_dir"
+// var last_dir string = ""
 var reference_file_path string = "/tmp/pm_reference_file"
 var reference_file string = "package.json"
 
@@ -90,71 +91,8 @@ func flagMode() {
 		}
 	}
 
-	// if flag == "-" {
-	// 	goBackToPreviousDirectory()
-	// } else if flag == "--root" || flag == "-r" {
-	// 	goToFileReference()
-	// } else if flag == "--file" || flag == "-f" {
-	// 	setReFerenceFile()
-	// } else if flag == "--help" || flag == "-h" {
-	// 	printHelpMenu()
-	// }
-}
-
-func goToFileReference() {
-	stop := false
-	setLastDirectory()
-
-	for !stop {
-		moveBack()
-
-		if hasReferenceFileInCurrentDirectory() {
-			stop = true
-			println("Reference file found in current directory")
-		}
-
-		if isInRootDirectory() {
-			stop = true
-			println("Root directory found, no reference file found")
-			goBackToPreviousDirectory()
-		}
-	}
-}
-
-func hasReferenceFileInCurrentDirectory() bool {
-	_, err := os.Stat(reference_file)
-	return !os.IsNotExist(err)
-}
-
-func moveBack() {
-	cmd := exec.Command("cd", "..")
-	err := cmd.Run()
-
-	if err != nil {
-		println("Error: " + err.Error())
-	}
-}
-
-func isInRootDirectory() bool {
-	_, err := os.Stat(temp_file_path)
-	return os.IsNotExist(err)
-}
-
-func setLastDirectory() {
-	cmd := exec.Command("echo", "pwd > " + temp_file_path)
-	err := cmd.Run()
-
-	if err != nil {
-		println("Error: " + err.Error())
-	}
-}
-
-func goBackToPreviousDirectory() {
-	cmd := exec.Command("cd", "$(cat " + temp_file_path + ")")
-	err := cmd.Run()
-
-	if err != nil {
-		println("Error: " + err.Error())
+	if flag == "--help" || flag == "-h" {
+		printHelpMenu()
 	}
 }
 
@@ -168,4 +106,15 @@ func printHelpMenu() {
 	fmt.Println("pm [--help | -h]    		Show this help menu")
 
 	os.Exit(0)
+}
+
+func goToFileReference() {
+	referenceFileContent, err := os.ReadFile(reference_file_path)
+
+	if err != nil {
+		println("Error while reading reference file: " + err.Error())
+		os.Exit(1)
+	}
+
+	println("Going to " + string(referenceFileContent))
 }
