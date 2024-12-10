@@ -7,11 +7,11 @@ import (
 )
 
 var temp_file_path string = "/tmp/pm_last_dir"
-var config_file_path string = "/tmp/pm_config_file"
-var target_file string = "package.json"
+var reference_file_path string = "/tmp/pm_reference_file"
+var reference_file string = "package.json"
 
 func main() {
-	checkIfTargetFileExists()
+	checkIfReferenceFileExists()
 
 	if len(os.Args) > 1 {
 		flagMode()
@@ -20,25 +20,88 @@ func main() {
 	goToFileReference()
 }
 
-func checkIfTargetFileExists() {
-	if (target_file == "") {
-		println("Target file is not set, Use --file to set it")
-		os.Exit(1)
+func checkIfReferenceFileExists() {
+	referenceFileContent, err := os.ReadFile(reference_file_path)
+
+	if err != nil {
+		println("Reference file not found: " + reference_file)
+		createReferenceFile()
+	}
+
+	if string(referenceFileContent) == "" {
+		println("Reference file not found: " + reference_file)
+		println("Use 'pm --file [file]' to set the reference file")
+		os.Exit(0)
 	}
 }
 
-func flagMode() {
-	arg := os.Args[1]
-
-	if arg == "-" {
-		goBackToPreviousDirectory()
-	} else if arg == "--root" || arg == "-r" {
-		goToFileReference()
-	} else if arg == "--file" || arg == "-f" {
-		setTargetFile()
-	} else if arg == "--help" || arg == "-h" {
-		printHelpMenu()
+func setReFerenceFile() {
+	if len(os.Args) < 3 {
+		println("No file specified")
+		println("You should use 'pm --file [file]' to set the reference file")
+		os.Exit(1)
 	}
+
+	reference_file = os.Args[2]
+	cmd := exec.Command("echo", reference_file + " > " + reference_file_path)
+	err := cmd.Run()
+
+	if err != nil {
+		println("Error setting reference file: " + err.Error())
+		os.Exit(1)
+	}
+
+	println("Target file set to " + reference_file)
+}
+
+func createReferenceFile() {
+	if _, err := os.Stat(reference_file); os.IsExist(err) {
+		println("Reference file already exists")
+		os.Exit(1)
+	}
+
+	cmd := exec.Command("touch", reference_file_path)
+	err := cmd.Run()
+
+	if err != nil {
+		println("Error creating reference file: " + err.Error())
+		os.Exit(1)
+	}
+
+	println("Reference file created: " + reference_file)
+}
+
+func printReferenceFile() {
+	referenceFileContent, err := os.ReadFile(reference_file_path)
+
+	if err != nil {
+		println("Reference file not found: " + reference_file)
+		os.Exit(1)
+	}
+
+	println("Current reference file: " + string(referenceFileContent))
+}
+
+func flagMode() {
+	flag := os.Args[1]
+
+	if flag == "--file" || flag == "-f" {
+		if len(os.Args) < 3 {
+			printReferenceFile()
+		} else {
+			setReFerenceFile()
+		}
+	}
+
+	// if flag == "-" {
+	// 	goBackToPreviousDirectory()
+	// } else if flag == "--root" || flag == "-r" {
+	// 	goToFileReference()
+	// } else if flag == "--file" || flag == "-f" {
+	// 	setReFerenceFile()
+	// } else if flag == "--help" || flag == "-h" {
+	// 	printHelpMenu()
+	// }
 }
 
 func goToFileReference() {
@@ -62,7 +125,7 @@ func goToFileReference() {
 }
 
 func hasReferenceFileInCurrentDirectory() bool {
-	_, err := os.Stat(target_file)
+	_, err := os.Stat(reference_file)
 	return !os.IsNotExist(err)
 }
 
@@ -78,16 +141,6 @@ func moveBack() {
 func isInRootDirectory() bool {
 	_, err := os.Stat(temp_file_path)
 	return os.IsNotExist(err)
-}
-
-func setTargetFile() {
-	if len(os.Args) < 3 {
-		println("No file specified")
-		os.Exit(1)
-	}
-
-	target_file = os.Args[2]
-	println("Target file set to " + target_file)
 }
 
 func setLastDirectory() {
