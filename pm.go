@@ -14,6 +14,12 @@ func main() {
 	if len(os.Args) > 1 {
 		flagMode()
 	}
+
+	if hasReferenceFileInCurrentDirectory() {
+		println("Reference file found")
+	} else {
+		println("Reference file not found")
+	}
 }
 
 func checkIfTargetFileExists() {
@@ -28,9 +34,26 @@ func flagMode() {
 
 	if arg == "--root" || arg == "-r" {
 		getRootDir()
+	} else if arg == "--file" || arg == "-f" {
+		setTargetFile()
 	}
 }
 
 func getRootDir() {
 	println("Root dir")
+}
+
+func hasReferenceFileInCurrentDirectory() bool {
+	_, err := os.Stat(target_file)
+	return !os.IsNotExist(err)
+}
+
+func setTargetFile() {
+	if len(os.Args) < 3 {
+		println("No file specified")
+		os.Exit(1)
+	}
+
+	target_file = os.Args[2]
+	println("Target file set to " + target_file)
 }
