@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"os/exec"
 )
 
 var temp_file_path string = "/tmp/pm_last_dir"
@@ -15,11 +16,7 @@ func main() {
 		flagMode()
 	}
 
-	if hasReferenceFileInCurrentDirectory() {
-		println("Reference file found")
-	} else {
-		println("Reference file not found")
-	}
+	getRootDir()
 }
 
 func checkIfTargetFileExists() {
@@ -40,12 +37,34 @@ func flagMode() {
 }
 
 func getRootDir() {
-	println("Root dir")
+	stop := false
+
+	for !stop {
+		moveBack()
+
+		if hasReferenceFileInCurrentDirectory() || isRootDirectory() {
+			stop = true
+		}
+	}
 }
 
 func hasReferenceFileInCurrentDirectory() bool {
 	_, err := os.Stat(target_file)
 	return !os.IsNotExist(err)
+}
+
+func moveBack() {
+	cmd := exec.Command("cd", "..")
+	err := cmd.Run()
+
+	if err != nil {
+		println("Error: " + err.Error())
+	}
+}
+
+func isRootDirectory() bool {
+	_, err := os.Stat(temp_file_path)
+	return os.IsNotExist(err)
 }
 
 func setTargetFile() {
