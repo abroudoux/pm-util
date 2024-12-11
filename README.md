@@ -1,8 +1,8 @@
 # pm
 
-🗂️ Bash Utility to Manage Commands Inside Projects.
+🗂️ Manage Commands Inside Projects.
 
-Version : 1.2.0
+Version : 2.0.0
 
 ## 🚀 Installation
 
@@ -78,10 +78,11 @@ Create a branch with a [conventionnal name](https://tilburgsciencehub.com/buildi
 
 ## 📌 Roadmap
 
-- [ ] Improve installation
-- [ ] Multiple packages managers options
+- [ ] Homebrew installation
+- [ ] apt installation
 - [ ] Add options to navigate even faster in your project (wip...)
 - [ ] Upload ASCII art
+- [x] Rewrite script in `Go`
 
 ## 📑 License
 
