@@ -146,14 +146,11 @@ func getReferenceFile() (string, error) {
 
 func printHelpMenu() {
 	println("Usage: pm [options] [command]")
-	println("Options:")
-	println("pm [--root | -r]    		Go to the root directory of the project")
-	println("pm [command]     	 		Go to the directory of the project and run the command")
-	println("pm [-]     		 		Go back to the previous directory")
-	println("pm [--file | -f] [file]    Set the target file")
-	println("pm [--help | -h]    		Show this help menu")
-
-	os.Exit(0)
+	fmt.Printf("  %-20s %s\n", "pm [--root | -r]", "Go to the root directory of the project")
+	fmt.Printf("  %-20s %s\n", "pm [command]", "Go to the directory of the project and run the command")
+	fmt.Printf("  %-20s %s\n", "pm [-]", "Go back to the previous directory")
+	fmt.Printf("  %-20s %s\n", "pm [--file | -f] [file]", "Set the target file")
+	fmt.Printf("  %-20s %s\n", "pm [--help | -h]", "Show this help menu")
 }
 
 func goToFileReference() error {
@@ -170,12 +167,6 @@ func goToFileReference() error {
 			}
 
 			println("Reference file found in:", currentDir)
-			cmd := exec.Command("cd", currentDir)
-			err = cmd.Run()
-			if err != nil {
-				return fmt.Errorf("error going to reference file directory: %v", err)
-			}
-
 			return nil
 		}
 
