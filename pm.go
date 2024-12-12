@@ -166,7 +166,8 @@ func goToFileReference() error {
 				return fmt.Errorf("error getting current working directory: %v", err)
 			}
 
-			println("Reference file found in:", currentDir)
+			println("Current directory: " + currentDir)
+
 			return nil
 		}
 
