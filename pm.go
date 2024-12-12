@@ -48,16 +48,6 @@ func checkIfReferenceFileExists() error {
 	return nil
 }
 
-func setReferenceFile(referenceFile string) error {
-	err := os.WriteFile(referenceFilePath, []byte(referenceFile), 0644)
-	if err != nil {
-		return fmt.Errorf("error setting reference file: %v", err)
-	}
-
-	println("Target file set to", referenceFile)
-	return nil
-}
-
 func createReferenceFile() error {
 	file, err := os.Create(referenceFilePath)
 	if err != nil {
@@ -75,27 +65,14 @@ func createReferenceFile() error {
 	return nil
 }
 
-func printReferenceFile() error {
-	referenceFileContent, err := os.ReadFile(referenceFilePath)
+func setReferenceFile(referenceFile string) error {
+	err := os.WriteFile(referenceFilePath, []byte(referenceFile), 0644)
 	if err != nil {
-		return fmt.Errorf("error reading reference file: %v", err)
+		return fmt.Errorf("error setting reference file: %v", err)
 	}
 
-	println("Current reference file: " + strings.TrimSpace(string(referenceFileContent)))
+	println("Target file set to", referenceFile)
 	return nil
-}
-
-func getReferenceFile() (string, error) {
-	referenceFileContent, err := os.ReadFile(referenceFilePath)
-	if err != nil {
-		return "", fmt.Errorf("error reading reference file: %v", err)
-	}
-
-	if string(referenceFileContent) == "" {
-		return "", fmt.Errorf("reference file not found")
-	}
-
-	return string(referenceFileContent), nil
 }
 
 func flagMode() {
@@ -144,6 +121,29 @@ func flagMode() {
 	os.Exit(0)
 }
 
+func printReferenceFile() error {
+	referenceFileContent, err := os.ReadFile(referenceFilePath)
+	if err != nil {
+		return fmt.Errorf("error reading reference file: %v", err)
+	}
+
+	println("Current reference file: " + strings.TrimSpace(string(referenceFileContent)))
+	return nil
+}
+
+func getReferenceFile() (string, error) {
+	referenceFileContent, err := os.ReadFile(referenceFilePath)
+	if err != nil {
+		return "", fmt.Errorf("error reading reference file: %v", err)
+	}
+
+	if string(referenceFileContent) == "" {
+		return "", fmt.Errorf("reference file not found")
+	}
+
+	return string(referenceFileContent), nil
+}
+
 func printHelpMenu() {
 	println("Usage: pm [options] [command]")
 	println("Options:")
@@ -157,51 +157,70 @@ func printHelpMenu() {
 }
 
 func goToFileReference() error {
-	currentWorkingDirectory, err := os.Getwd()
-	if err != nil {
-		return fmt.Errorf("error getting current working directory: %v", err)
-	}
-
-	err = setCurrentWorkingDirectory(currentWorkingDirectory)
+	err := setCurrentWorkingDirectory()
 	if err != nil {
 		return fmt.Errorf("error setting current working directory: %v", err)
 	}
 
-	referenceFile, err := os.ReadFile(referenceFilePath)
-	if err != nil {
-		return fmt.Errorf("error reading reference file: %v", err)
-	}
+	for {
+		if checkIfReferenceFileInCurrentDirectory() {
+			currentDir, err := getCurrentWorkingDirectory()
+			if err != nil {
+				return fmt.Errorf("error getting current working directory: %v", err)
+			}
 
-	println("Going to " + string(referenceFile))
-	stop := false
+			println("Reference file found in:", currentDir)
+			cmd := exec.Command("cd", currentDir)
+			err = cmd.Run()
+			if err != nil {
+				return fmt.Errorf("error going to reference file directory: %v", err)
+			}
 
-	for !stop {
+			return nil
+		}
+
 		err := moveBack()
 		if err != nil {
 			return fmt.Errorf("error moving back: %v", err)
 		}
 
-		if checkIfReferenceFileInCurrentDirectory() {
-			stop = true
-			referenceFile, err := getReferenceFile()
-			if err != nil {
-				return fmt.Errorf("error getting reference file: %v", err)
-			}
-			println("Reference file '%s' found", referenceFile)
+		if isRootDirectory() {
+			return fmt.Errorf("reference file not found")
 		}
 	}
+}
 
-	return nil
+func getCurrentWorkingDirectory() (string, error) {
+	dir, err := os.Getwd()
+	if err != nil {
+		return "", fmt.Errorf("error getting current working directory: %v", err)
+	}
+
+	return dir, nil
+}
+
+func isRootDirectory() bool {
+	currentDir, _ := os.Getwd()
+	return currentDir == "/"
 }
 
 func moveBack() error {
-	cmd := exec.Command("cd", "..")
-	err := cmd.Run()
+	err := os.Chdir("..")
 	if err != nil {
 		return fmt.Errorf("error moving back: %v", err)
 	}
 
 	return nil
+}
+
+func checkIfReferenceFileInCurrentDirectory() bool {
+	referenceFile, err := getReferenceFile()
+	if err != nil {
+		return false
+	}
+
+	_, err = os.Stat(referenceFile)
+	return err == nil
 }
 
 func goToPreviousWorkingDirectory() error {
@@ -224,17 +243,13 @@ func goToPreviousWorkingDirectory() error {
 	return nil
 }
 
-func checkIfReferenceFileInCurrentDirectory() bool {
-	info, err := os.Stat(referenceFilePath)
-	if os.IsNotExist(err) {
-		return false
+func setCurrentWorkingDirectory() error {
+	currentWorkingDirectory, err := getCurrentWorkingDirectory()
+	if err != nil {
+		return fmt.Errorf("error getting current working directory: %v", err)
 	}
 
-	return !info.IsDir()
-}
-
-func setCurrentWorkingDirectory(currentWorkingDirectory string) error {
-	err := os.WriteFile(previousWorkdingDirectoryPath, []byte(currentWorkingDirectory), 0644)
+	err = os.WriteFile(previousWorkdingDirectoryPath, []byte(currentWorkingDirectory), 0644)
 	if err != nil {
 		return fmt.Errorf("error setting current working directory: %v", err)
 	}
