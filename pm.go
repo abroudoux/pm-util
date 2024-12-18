@@ -11,7 +11,6 @@ import (
 //go:embed assets/ascii.txt
 var asciiArt string
 
-var previousWorkdingDirectoryPath string = "/tmp/pm_last_working_directory"
 var referenceFilePath string = "/tmp/pm_reference_file"
 
 func main() {
@@ -25,11 +24,7 @@ func main() {
 		flagMode()
 	}
 
-	err = goToFileReference()
-	if err != nil {
-		println(err.Error())
-		os.Exit(1)
-	}
+	println("No command provided. Use 'pm --help' to see the available options.")
 }
 
 func checkIfReferenceFileExists() error {
@@ -78,14 +73,8 @@ func setReferenceFile(referenceFile string) error {
 func flagMode() {
 	flag := os.Args[1]
 
-	if flag == "-" {
-		err := goToPreviousWorkingDirectory()
-		if err != nil {
-			println(err.Error())
-			os.Exit(1)
-		}
-	} else if flag == "--file" || flag == "-f" {
-		if len(os.Args) < 3 {
+	if flag == "--file" || flag == "-f" {
+		if len(os.Args) == 2 {
 			err := printReferenceFile()
 			if err != nil {
 				println(err.Error())
@@ -146,19 +135,12 @@ func getReferenceFile() (string, error) {
 
 func printHelpMenu() {
 	println("Usage: pm [options] [command]")
-	fmt.Printf("  %-20s %s\n", "pm [--root | -r]", "Go to the root directory of the project")
 	fmt.Printf("  %-20s %s\n", "pm [command]", "Go to the directory of the project and run the command")
-	fmt.Printf("  %-20s %s\n", "pm [-]", "Go back to the previous directory")
 	fmt.Printf("  %-20s %s\n", "pm [--file | -f] [file]", "Set the target file")
 	fmt.Printf("  %-20s %s\n", "pm [--help | -h]", "Show this help menu")
 }
 
 func goToFileReference() error {
-	err := setCurrentWorkingDirectory()
-	if err != nil {
-		return fmt.Errorf("error setting current working directory: %v", err)
-	}
-
 	for {
 		if checkIfReferenceFileInCurrentDirectory() {
 			currentDir, err := getCurrentWorkingDirectory()
@@ -167,7 +149,6 @@ func goToFileReference() error {
 			}
 
 			println("Current directory: " + currentDir)
-
 			return nil
 		}
 
@@ -215,40 +196,6 @@ func checkIfReferenceFileInCurrentDirectory() bool {
 	return err == nil
 }
 
-func goToPreviousWorkingDirectory() error {
-	previousWorkingDirectory, err := os.ReadFile(previousWorkdingDirectoryPath)
-	if err != nil {
-		return fmt.Errorf("error reading last directory: %v", err)
-	}
-
-	if string(previousWorkingDirectory) == "" {
-		return fmt.Errorf("last directory not found")
-	}
-
-	println("Going back to " + string(previousWorkingDirectory))
-	cmd := exec.Command("cd", string(previousWorkingDirectory))
-	err = cmd.Run()
-	if err != nil {
-		return fmt.Errorf("error going back to last directory: %v", err)
-	}
-
-	return nil
-}
-
-func setCurrentWorkingDirectory() error {
-	currentWorkingDirectory, err := getCurrentWorkingDirectory()
-	if err != nil {
-		return fmt.Errorf("error getting current working directory: %v", err)
-	}
-
-	err = os.WriteFile(previousWorkdingDirectoryPath, []byte(currentWorkingDirectory), 0644)
-	if err != nil {
-		return fmt.Errorf("error setting current working directory: %v", err)
-	}
-
-	return nil
-}
-
 func runCommandInReferenceFileDirectory() error {
 	err := goToFileReference()
 	if err != nil {
@@ -274,12 +221,7 @@ func runCommandInReferenceFileDirectory() error {
 		return fmt.Errorf("error running command: %v", err)
 	}
 
-	println("Command '%s' executed", command)
-
-	err = goToPreviousWorkingDirectory()
-	if err != nil {
-		return fmt.Errorf("error going back to previous directory: %v", err)
-	}
+	println("Command executed successfully!")
 
 	return nil
 }
