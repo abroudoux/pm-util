@@ -1,8 +1,8 @@
 # pm
 
-🗂️ Bash Utility to Manage Commands Inside Projects.
+🗂️ Run commands from everywhere in your project.
 
-Version : 1.2.0
+Version : 2.0.0
 
 ## 🚀 Installation
 
@@ -12,16 +12,11 @@ Wip 🚧
 
 ### Manual
 
-You can copy the function in your shell's RC file. Alternatively, You can create a separate Bash script file and copy `pm.sh` into it. You'll need to load it at the beginning of your shell RC file (e.g., `.bashrc`, `.zshrc`, etc.).
+You can paste the binary in your `bin` directory (e.g., on mac it's `/usr/bin/local`). \
+Don't forget to grant execution permissions to the binary.
 
 ```bash
-source path/to/your/script.sh
-```
-
-Don't forget to resource your shell RC file:
-
-```bash
-source ~/.zshrc
+chmox +x pm
 ```
 
 ## 💻 Usage
@@ -34,20 +29,6 @@ source ~/.zshrc
 pm npm install express
 ```
 
-You can also return at the root of the project by simply use `pm` or the flag `--root` / `-r`.
-
-```bash
-# Will move you to the root of your project
-pm --root
-```
-
-Your previous working directory is saved, so you can use `pm -` to go back to it.
-
-```bash
-# Will move you back to your previous working directory
-pm -
-```
-
 Use the `--file` / `-f` flag to configure your file reference.
 
 > By default, the value is `package.json`.
@@ -57,11 +38,11 @@ Use the `--file` / `-f` flag to configure your file reference.
 pm --file cargo.lock
 ```
 
-You can see your reference file by using the flag `--show` / `-s`.
+You can see your reference file by using the flag `--file` / `-f` without argument.
 
 ```bash
 # Will output your reference file
-pm --show
+pm --file
 ```
 
 ## 🧑‍🤝‍🧑 Contributing
@@ -78,10 +59,13 @@ Create a branch with a [conventionnal name](https://tilburgsciencehub.com/buildi
 
 ## 📌 Roadmap
 
-- [ ] Improve installation
-- [ ] Multiple packages managers options
+- [ ] Homebrew installation
+- [ ] apt installation
 - [ ] Add options to navigate even faster in your project (wip...)
-- [ ] Upload ASCII art
+- [x] Upload ASCII art
+- [x] Rewrite script in `Go`
+- [ ] Implement `pm -` in go
+- [ ] Option to go to the root of the project
 
 ## 📑 License
 
