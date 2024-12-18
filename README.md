@@ -1,6 +1,6 @@
 # pm
 
-🗂️ Run commands from everywhere in your project.
+🍀 Run commands from everywhere in your project.
 
 Version : 2.0.0
 
